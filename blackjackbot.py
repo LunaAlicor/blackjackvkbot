@@ -96,16 +96,18 @@ def event_worker(event):
                                             msg = event.object.message['text'].lower()
                                             text = msg
                                             user_id = message['from_id']
-                                            if msg == '+':
+                                            if msg == '+' and user_id == id_list[i_p]:
                                                 take_card(players[i_p], deck)
                                                 vk = vk_session.get_api()
                                                 user_info = vk.users.get(user_ids=id_list[i_p])
                                                 user_name = user_info[0]['first_name']
                                                 send_message(chat_id, f'{user_name} ваш счет: {sum(players[i_p])}')
                                                 break
-                                            else:
+                                            elif msg == '-' and user_id == id_list[i_p]:
                                                 inactive_players.append(i_p)
                                                 break
+                                            else:
+                                                send_message(chat_id, 'Тебе нельзя ходить за других людей')
                                     else:
                                         if i_p not in inactive_players:
                                             if sum(diller_mudack) < 17:
